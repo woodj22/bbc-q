@@ -14,10 +14,7 @@ class JobController extends RestController
     protected $modelType = 'App\Job';
     protected $postFields = ['job_type', 'parameter'];
     protected $putFields = ['job_type', 'parameter'];
-    protected $allowedFilters = [
-        'job_type',
-
-    ];
+    protected $allowedFilters = ['job_type',];
 
     protected $allowedSearchFilters = [
         'job_type',
