@@ -14,7 +14,6 @@ abstract class RestController extends Controller
     protected $allowedSearchFilters = null;
 
     protected $currentSearchTerm = null;
-
     public function index()
     {
         // Request Query String
