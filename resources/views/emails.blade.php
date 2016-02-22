@@ -15,7 +15,7 @@
 
 <body>
 
-<h1> hello world </h>
+<h1> hello test html email </h>
 @yield('content')
 
 </body>

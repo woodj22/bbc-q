@@ -4,25 +4,49 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-use App\Http\Requests\JobRequest;
+use App\Http\Requests\EmailRequest;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 
-class emailController extends Controller
+
+class EmailController extends Controller
 {
-
-
-    public function sendEmailReminder(Request $request, $id)
+    public function index()
     {
-        $user = User::findOrFail($id);
-        echo "hello world";
 
-        Mail::send('emails.reminder', ['user' => $user], function ($m) use ($user) {
-            $m->from('hello@app.com', 'Your Application');
+     //   return view('emails');
 
-            $m->to($user->email, $user->name)->subject('Your Reminder!');
-        });
     }
+    public function sendEmailReminder(EmailRequest $request, $id)
+    {
+
+        echo "hello world";
+exit();
+
+   /*
+    $data = ['name'=> 'luke',
+    'email'=>'joe.wood@bbc.co.uk'];
+
+
+        Mail::send('emails', $data, function ($message) {
+            $message->from('us@example.com', 'Laravel');
+
+            $message->to($data['email']);
+        });
+
+
+
+*/
+
+    }
+
+
+
+
+
+
+
 
 }

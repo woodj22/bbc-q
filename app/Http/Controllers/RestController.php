@@ -15,7 +15,11 @@ abstract class RestController extends Controller
 
     protected $currentSearchTerm = null;
     public function index()
+
+
     {
+
+
         // Request Query String
         $model = new $this->modelType;
 

@@ -16,5 +16,9 @@ use Illuminate\Http\Request;
 Route::resource('api/jobs', 'JobController', ['only' => ['index', 'show', 'store', 'destroy']]);
 
 
-Route::resource('api/email','emailController@sendEmailReminder');
+
+
+Route::get('api/email', 'EmailController@sendEmailReminder');
+
+
 
