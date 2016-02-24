@@ -1,6 +1,11 @@
 <?php
-
-namespace App\Http\Controllers;
+/**
+ * Created by PhpStorm.
+ * User: JoeWood
+ * Date: 23/02/2016
+ * Time: 16:56
+ */
+namespace app\Jobs;
 
 
 use Illuminate\Http\Request;
@@ -9,28 +14,20 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
-use App\Jobs\SendEmail;
 
-class EmailController extends Controller
+
+
+class SendEmail
 {
-    public function index()
+
+    public function sendEmail()
+
     {
 
-     //   return view('emails');
-
-    }
-    public function sendEmail(SendEmail $sendEmail)
-    {
-
-        $sendEmail->sendEmail();
 
 
-        echo "email job has been called";
-
-/*
-
-    $data = ['name'=> 'luke',
-    'email'=>'joe.wood@bbc.co.uk'];
+        $data = ['name' => 'luke',
+            'email' => 'joe.wood@bbc.co.uk'];
 
 
         Mail::send('emails', $data, function ($message) {
@@ -38,16 +35,10 @@ class EmailController extends Controller
 
             $message->to('joe.wood@bbc.co.uk');
         });
-*/
+
+
+        echo "email has been sent";
 
 
     }
-
-
-
-
-
-
-
-
 }

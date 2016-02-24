@@ -18,7 +18,7 @@ Route::resource('api/jobs', 'JobController', ['only' => ['index', 'show', 'store
 
 
 
-Route::get('api/email', 'EmailController@sendEmailReminder');
+Route::get('api/email', 'EmailController@sendEmail');
 
 
 
