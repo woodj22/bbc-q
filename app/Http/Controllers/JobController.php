@@ -22,7 +22,7 @@ class JobController extends RestController
     ];
 
 
-    public function store(JobRequest $request)
+    public function store(Request $request)
     {
         return $this->rootStore($request);
     }

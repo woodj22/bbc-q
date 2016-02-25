@@ -20,7 +20,12 @@ use Illuminate\Support\Facades\Mail;
 class SendEmail
 {
 
-    public function sendEmail()
+    public function run($params){
+        echo 'run has been fired in SendEmail()';
+
+       $this->activate();
+    }
+    public function activate()
 
     {
 
