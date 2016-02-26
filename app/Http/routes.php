@@ -15,12 +15,12 @@ use Illuminate\Http\Request;
 
 Route::resource('api/jobs', 'JobController', ['only' => ['index', 'show', 'store', 'destroy']]);
 
+Route::get('api/jobs', 'JobController@runJobCollector');
 
 
 
 Route::get('api/email', 'EmailController@handle');
 
-Route::get('api/collector', 'JobCollector@searchTable');
 
 
 

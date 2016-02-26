@@ -13,7 +13,9 @@ class Job extends Model
         'id' => 'integer',
         'task_id' => 'integer',
         'job_type'=> 'string',
-        'parameter'=> 'text',
+        'payload'=>'text',
+        'status'=>'boolean',
+
 
     ];
 

@@ -16,26 +16,33 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 
 
-
 class SendEmail
 {
 
-    public function run($params){
-        echo 'run has been fired in SendEmail()';
+    private $params;
 
-       $this->activate();
+    public function run($payload)
+    {
+
+
+        $jsonDecode = json_decode($payload, true);
+
+
+        $this->params = $jsonDecode;
+        $this->activate();
+
+
     }
+
     public function activate()
 
     {
 
 
-
-        $data = ['name' => 'luke',
-            'email' => 'joe.wood@bbc.co.uk'];
+        echo implode($this->params, ",");
 
 
-        Mail::send('emails', $data, function ($message) {
+        Mail::send('emails', $this->params, function ($message) {
             $message->from('us@example.com', 'Laravel');
 
             $message->to('joe.wood@bbc.co.uk');
@@ -46,4 +53,6 @@ class SendEmail
 
 
     }
+
+
 }

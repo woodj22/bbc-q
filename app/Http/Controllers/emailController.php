@@ -20,11 +20,12 @@ class EmailController extends Controller
      //   return view('emails');
 
     }
-    public function handle(SendEmail $sendEmail)
+    public function handle()
     {
 
+        $sendEmail = new sendEmail();
 
-       $sendEmail->sendEmail();
+        $sendEmail->activate();
 
 
         echo "email job has been called";

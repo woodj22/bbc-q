@@ -7,8 +7,9 @@
  */
 
 
+//namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
+namespace App\Jobs;
 
 
 use Illuminate\Http\Request;
@@ -22,12 +23,12 @@ use Illuminate\Filesystem\Filesystem;
 use App\Jobs;
 use App\Job;
 
-class JobCollector extends Controller
+
+class JobCollector
 {
     public function index()
     {
 
-        //   return view('emails');
 
     }
 
@@ -36,19 +37,23 @@ class JobCollector extends Controller
     {
 
 
-
-
         $jobList = Job::all();
+
+
         foreach ($jobList as $job) {
-            $jobName = 'App\\Jobs\\'.$job->job_type;
-            $classToUse = new $jobName;
-            $classToUse->run($job->parameters);
+
+            if ($job->status == true) {
+
+
+                $jobName = 'App\\Jobs\\' . $job->job_type;
+                $classToUse = new $jobName;
+                $classToUse->run($job->payload);
+
+
+            }
         }
 
         // $sendEmail->sendEmail();
-
-
-        echo "email job has been called";
 
 
     }
