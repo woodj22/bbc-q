@@ -166,7 +166,7 @@
                             <p><?php echo $body  ?></p>
                             <h1><?php echo $name?></h1>
                             <p></p>
-                            <h2>How do I use it?</h2>
+                            <h2>from: <?php echo $sender ?></h2>
 
                             <!-- button -->
                             <table class="btn-primary" cellpadding="0" cellspacing="0" border="0">

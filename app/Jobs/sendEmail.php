@@ -15,31 +15,32 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 
+use App\Jobs\JobModel;
+use DB;
 
-class SendEmail
+class SendEmail extends JobModel
 {
 
     private $params;
+
 
     public function run($payload)
     {
 
 
+       // $this->params = parent::decodeJson($payload);
+
         $jsonDecode = json_decode($payload, true);
-
-
-        $this->params = $jsonDecode;
+      //  echo implode($jsonDecode,",");
+         $this->params = $jsonDecode;
         $this->activate();
 
-
     }
+
 
     public function activate()
 
     {
-
-
-        echo implode($this->params, ",");
 
 
         Mail::send('emails', $this->params, function ($message) {
@@ -47,6 +48,7 @@ class SendEmail
 
             $message->to('joe.wood@bbc.co.uk');
         });
+
 
 
         echo "email has been sent";

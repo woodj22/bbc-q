@@ -20,17 +20,11 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Filesystem\Filesystem;
 
-use App\Jobs;
 use App\Job;
 
 
 class JobCollector
 {
-    public function index()
-    {
-
-
-    }
 
 
     public function searchTable()
@@ -39,21 +33,19 @@ class JobCollector
 
         $jobList = Job::all();
 
-
         foreach ($jobList as $job) {
 
             if ($job->status == true) {
+                $testVar = 0;
+                echo 'hello world';
 
-
-                $jobName = 'App\\Jobs\\' . $job->job_type;
+                $jobName = 'App\\Jobs\\'.$job->job_type;
                 $classToUse = new $jobName;
                 $classToUse->run($job->payload);
-
 
             }
         }
 
-        // $sendEmail->sendEmail();
 
 
     }
