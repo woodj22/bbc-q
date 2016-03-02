@@ -13,7 +13,11 @@ class Task extends Model
 
     protected $casts = [
         'id' => 'integer',
-        'job_id' => 'integer'
+        'task_id'=>'integer',
+        'task_type'=>'string',
+        'status' => 'integer',
+        'run_at'=>'timestamp',
+
     ];
 
 

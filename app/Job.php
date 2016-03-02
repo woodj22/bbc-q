@@ -14,10 +14,11 @@ class Job extends Model
         'task_id' => 'integer',
         'job_type'=> 'string',
         'payload'=>'text',
-        'status'=>'boolean',
-
+        'status'=>'integer',
+        'run_at'=>'timestamp',
 
     ];
+
 
 
     public function getUpdatedAtAttribute($value)

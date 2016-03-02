@@ -162,11 +162,11 @@
                 <table>
                     <tr>
                         <td>
-                            <p>Hi <?php echo $name?>,</p>
-                            <p><?php echo $body  ?></p>
-                            <h1><?php echo $name?></h1>
+                            <p>Hi </p>
                             <p></p>
-                            <h2>from: <?php echo $sender ?></h2>
+                            <h1></h1>
+                            <p></p>
+                            <h2>from: </h2>
 
                             <!-- button -->
                             <table class="btn-primary" cellpadding="0" cellspacing="0" border="0">

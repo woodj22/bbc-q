@@ -7,20 +7,22 @@
  */
 
 namespace App\Jobs;
+use Faker\Provider\DateTime;
+use Carbon\Carbon;
+
 abstract class JobModel
 
 {
+   // public $params;
     abstract protected function run($payload);
+    protected  $statusVar ;
     abstract protected function activate();
+    protected $taskIdVar;
+    abstract protected function setup($taskId,$payload);
 
 
-
-    private $params;
-
-
-
-
-    function decodeJson($payload){
+    function decodeJson($payload)
+    {
 
         $jsonDecode = json_decode($payload, true);
 
@@ -28,12 +30,31 @@ abstract class JobModel
     }
 
 
+    function getStatus()
+    {
 
+        return $this->statusVar;
+    }
 
+    function getTime(){
+        $mytime = Carbon::now();
+         return $mytime;
+    }
+    public function setTaskId ($taskId){
 
-     function returnStatus(){
-            $thisReturn = 0;
-         return $thisReturn;
-     }
+            $this->taskIdVar = $taskId;
+        return $this->taskIdVar;
 
+    }
+    function getTaskId(){
+
+        return $this->taskIdVar;
+    }
+
+    public function setStatus($status){
+
+        $this->statusVar = $status;
+
+        return  $this->statusVar;
+    }
 }

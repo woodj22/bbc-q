@@ -15,6 +15,11 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\SomeEvent' => [
             'App\Listeners\EventListener',
+
+        ],
+
+        'App\Events\jobDone'=>[
+            'App\Listeners\jobDoneConfirmed',
         ],
     ];
 

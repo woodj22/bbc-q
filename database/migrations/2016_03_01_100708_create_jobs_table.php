@@ -17,7 +17,8 @@ class CreateJobsTable extends Migration
             $table->string('job_type');
             $table->integer('task_id');
             $table->text('payload');
-            $table->boolean('status');
+            $table->integer('status');
+            $table->dateTime('run_at');
             $table->timestamps();
         });
     }
