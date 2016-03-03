@@ -26,9 +26,15 @@ public function run ($payload){
 
     public function  setup($taskId,$payload){
 
-        DB::table('tasks')->insert(
-            ['task_id' => $taskId,'status'=>1,'task_type'=>'ImageTask']
-        );
+
+
+        $t = new Task;
+        $t->task_id = $taskId;
+        $t->status =1;
+        $t->task_type = 'ImageTask';
+        $t->save();
+
+
     }
 
 }

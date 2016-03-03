@@ -36,40 +36,33 @@ class JobCollector extends controller
     {
 
 
-
         $jobList = Job::all();
-       // echo $jobList;
+        // echo $jobList;
 
         foreach ($jobList as $job) {
-
-
 
 
             if ($job->status == true) {
 
 
-
                 $jobName = 'App\\Jobs\\' . $job->job_type;
                 $jobClassToUse = new $jobName;
-                $jobClassToUse->setup($job->task_id,$job->payload);
+                $jobClassToUse->setup($job->task_id, $job->payload);
 
 
                 $job_Task_Id = $job->task_id;
 
 
-
-
-                   $taskList = Task::where('task_id', $job_Task_Id)->get();
+                $taskList = Task::where('task_id', $job_Task_Id)->get();
                 echo $taskList;
 
-              //  $taskList = DB::select('select * from tasks where task_id = :id', ['id' => $job_Task_Id]);
+                //  $taskList = DB::select('select * from tasks where task_id = :id', ['id' => $job_Task_Id]);
 
 
                 foreach ($taskList as $task) {
 
 
-                    if ($task->status == true ) {
-
+                    if ($task->status == true) {
 
 
                         $taskName = 'App\\Jobs\\Tasks\\' . $task->task_type;
@@ -81,24 +74,16 @@ class JobCollector extends controller
                         $jTime = $taskClassToUse->getTime();
 
 
-                        Task::where('id',$task->id)->update(['status'=>0]);
+                        Task::where('id', $task->id)->update(['status' => 0]);
 
                     }
 
                 }
 
 
+                Job::where('id', $job->id)->update(['status' => 1]);
 
-                Job::where('id',$job->id)->update(['status'=>0]);
 
-                    /*
-                     *
-
-                DB::table('jobs')
-                    ->where('id', $job->id)
-                    ->update(['status' => 1]);
-
-                */
             }
         }
 
