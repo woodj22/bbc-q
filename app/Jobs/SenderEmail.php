@@ -6,8 +6,8 @@
  * Time: 14:29
  */
 
-namespace App\Jobs\Tasks;
-use App\Jobs\SendEmail;
+namespace App\Jobs;
+use App\Jobs\Tasks\SendEmail;
 
 
 class SenderEmail extends SendEmail

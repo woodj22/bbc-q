@@ -24,7 +24,6 @@ use App\Jobs\Tasks;
 
 use App\Job;
 use App\Task;
-use DB;
 
 class JobCollector extends controller
 {
@@ -49,14 +48,12 @@ class JobCollector extends controller
                 $jobClassToUse = new $jobName;
                 $jobClassToUse->setup($job->task_id, $job->payload);
 
-
+                //echo $job->task_type;
                 $job_Task_Id = $job->task_id;
 
-
                 $taskList = Task::where('task_id', $job_Task_Id)->get();
-                echo $taskList;
+                //echo $taskList;
 
-                //  $taskList = DB::select('select * from tasks where task_id = :id', ['id' => $job_Task_Id]);
 
 
                 foreach ($taskList as $task) {

@@ -5,11 +5,11 @@
  * Date: 02/03/2016
  * Time: 12:25
  */
-namespace App\Jobs\Tasks;
-use App\Jobs\ImageResize;
+namespace App\Jobs;
+use App\Jobs\Tasks\ImageResize;
 
 
-class ImageTask extends ImageResize
+class ImageJob extends ImageResize
 {
 
     // protected $params;

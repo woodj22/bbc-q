@@ -156,13 +156,16 @@
     <tr>
         <td></td>
         <td class="container" bgcolor="#FFFFFF">
+            <img src="www.online-image-editor.com//styles/2014/images/example_image.png">
+            <img src="www.online-image-editor.com//styles/2014/images/example_image.png">
+
 
             <!-- content -->
             <div class="content">
                 <table>
                     <tr>
                         <td>
-                            <p>Hi </p>
+                            <p>Hi </p>s
                             <p></p>
                             <h1></h1>
                             <p></p>
@@ -176,23 +179,6 @@
                                 </tr>
                             </table>
                             <!-- /button -->
-
-                            <p>Thanks, have a lovely day.</p>
-
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <!-- /content -->
-
-        </td>
-        <td></td>
-    </tr>
-</table>
-<!-- /body -->
-
-<!-- footer -->
-<table class="footer-wrap">
     <tr>
         <td></td>
         <td class="container">

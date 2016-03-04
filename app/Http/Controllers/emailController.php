@@ -9,7 +9,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
-use App\Jobs\SendEmail;
+use App\Jobs\Tasks\SendEmail;
 use App\Job;
 
 class EmailController extends Controller

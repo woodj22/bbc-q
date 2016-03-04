@@ -155,6 +155,9 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+            /*
+            *Intervention Image service provider(added by Joe Wood on 03/03/16)
+            */
 
     ],
 

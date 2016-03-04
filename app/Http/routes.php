@@ -17,9 +17,10 @@ Route::resource('api/jobs', 'JobController', ['only' => ['index', 'show', 'store
 
 Route::get('api/jobs', 'JobController@runJobCollector');
 
+Route::get('api/attach', 'JobController@getAttachments');
 
 
-Route::get('api/email', 'EmailController@handle');
+//Route::get('api/email', 'EmailController@handle');
 
 
 

@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         // Commands\Inspire::class,
         Commands\CallFile::class,
-        Commands\SendEmailCommand::class,
+        
         commands\JobListener::class
     ];
 

@@ -5,8 +5,8 @@
  * Date: 01/03/2016
  * Time: 13:24
  */
-namespace App\Jobs\Tasks;
-use App\Jobs\SendEmail;
+namespace App\Jobs;
+use App\Jobs\Tasks\SendEmail;
 
 
 class ReminderEmail extends SendEmail

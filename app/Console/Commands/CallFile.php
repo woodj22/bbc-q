@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;
-use App\Jobs\SendEmail;
+use App\Jobs\Tasks\SendEmail;
 class CallFile extends Command
 {
     /**
