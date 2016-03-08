@@ -15,9 +15,9 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
-
+use Storage;
 use App\Jobs\JobModel;
-
+use GuzzleHttp\Client;
 use App\user;
 use Illuminate\View\View;
 
@@ -66,7 +66,7 @@ class SendEmail extends JobModel
 
 
 
-        $this->getAttachments();
+         $this->getAttachments();
 
 
 
@@ -77,15 +77,13 @@ class SendEmail extends JobModel
 
         Mail::send('emails', $data, function ($message) {
 
-          //  $message->attach('http://www.google.com/logos/doodles/2015/googles-new-logo-5078286822539264.3-hp2x.gif');
 
 
             $message->from('ex@example.co.uk', 'Laravel');
             $message->to($this->params['info']);
 
 
-
-        });
+    });
 
 
 
@@ -102,8 +100,13 @@ class SendEmail extends JobModel
 
              if (!isset($matches[0])) return;
 
+
              foreach ($matches[0] as $index => $img) {
+
                  $src = $matches[1][$index];
+                echo $src;
+                 $name = '/blkimg' . $index.'.png';
+                 //Get the file
 
 
 
@@ -111,17 +114,59 @@ class SendEmail extends JobModel
                  if (strpos($src, '<?php echo $message->embed') !== false) {
 
                      echo 'contains php';
-                    $src ='';
-                    
-                 }else {
 
-                     $html = str_replace($src, '<?php echo $message->embed(' . '"' . $src . '"' . '); ?>', $html);
 
-                 }
+                       $img = null;
+
+                     unset($matches[1][$index]);
+
+                     break;
+
+
+
+                }else {
+
+
+                     unset($matches[1][$index]);
+                     $img = '/Applications/XAMPP/xamppfiles/htdocs/Queue/storage'.$name;
+
+                     
+                     $client = new Client();
+
+                     $request = $client->createRequest('GET', $src,[
+                         'verify' => false,
+                         'allow_redirects' => true,
+                         'exceptions' => false,
+                         'connect_timeout' => 60,
+                         'timeout' => 60,
+                         'cookies' => true,
+                         'proxy' => 'www-cache.reith.bbc.co.uk:80',
+                         'save_to' => $img,
+                     ]);
+                     $response = $client->send($request);
+
+
+
+                     $html = str_replace($src, '<?php echo $message->embed('."'"  . $img ."'".'); ?>', $html);
+                     echo $html;
+
+                       file_put_contents('/Applications/XAMPP/htdocs/Queue/resources/views/emails.blade.php', $html);
+
+
+
+                   }
+
+
+
+
+
+
+
              }
 
-             file_put_contents('/Applications/XAMPP/htdocs/Queue/resources/views/emails.blade.php', $html);
-         }
+
+
+    }
 
 
 

@@ -156,8 +156,9 @@
     <tr>
         <td></td>
         <td class="container" bgcolor="#FFFFFF">
-            <img src="www.online-image-editor.com//styles/2014/images/example_image.png">
-            <img src="www.online-image-editor.com//styles/2014/images/example_image.png">
+            <img src="<?php echo $message->embed('/Applications/XAMPP/xamppfiles/htdocs/Queue/storage/blkimg0.png'); ?>">
+
+
 
 
             <!-- content -->
