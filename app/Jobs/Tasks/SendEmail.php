@@ -16,8 +16,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Storage;
+use Illuminate\Support\Facades\Guzzle;
 use App\Jobs\JobModel;
-use GuzzleHttp\Client;
+
 use App\user;
 use Illuminate\View\View;
 
@@ -26,6 +27,7 @@ class SendEmail extends JobModel
 
     public $params;
     public $multiAddress;
+    public $data;
 
     public function setup($taskId, $payload)
     {
@@ -104,13 +106,13 @@ class SendEmail extends JobModel
              foreach ($matches[0] as $index => $img) {
 
                  $src = $matches[1][$index];
-                echo $src;
-                 $name = '/blkimg' . $index.'.png';
-                 //Get the file
+                 echo $src;
 
 
+                 $md5Src = md5($src );
+                 $imgName= $md5Src.'png';
 
-
+              //  $this->data
                  if (strpos($src, '<?php echo $message->embed') !== false) {
 
                      echo 'contains php';
@@ -128,23 +130,17 @@ class SendEmail extends JobModel
 
 
                      unset($matches[1][$index]);
-                     $img = '/Applications/XAMPP/xamppfiles/htdocs/Queue/storage'.$name;
+                     $img = '/Applications/XAMPP/xamppfiles/htdocs/Queue/storage'.$imgName;
 
-                     
-                     $client = new Client();
 
-                     $request = $client->createRequest('GET', $src,[
+                   //  $client = new Client();
+                     $request = \Guzzle::get($src,[
                          'verify' => false,
-                         'allow_redirects' => true,
                          'exceptions' => false,
-                         'connect_timeout' => 60,
-                         'timeout' => 60,
-                         'cookies' => true,
+                        // 'cookies' => true,
                          'proxy' => 'www-cache.reith.bbc.co.uk:80',
                          'save_to' => $img,
                      ]);
-                     $response = $client->send($request);
-
 
 
                      $html = str_replace($src, '<?php echo $message->embed('."'"  . $img ."'".'); ?>', $html);
@@ -155,7 +151,6 @@ class SendEmail extends JobModel
 
 
                    }
-
 
 
 

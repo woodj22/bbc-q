@@ -155,10 +155,14 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        //App\Providers\Guzzle::class,
+                'Kozz\Laravel\Providers\Guzzle'
+
+
+     //   Kozz\Laravel\Providers\Guzzle,
             /*
             *Intervention Image service provider(added by Joe Wood on 03/03/16)
             */
-
     ],
 
     /*
@@ -204,7 +208,11 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+        
+        //'Guzzle' => Illuminate\Support\Facades\Guzzle::Class,
+                'Guzzle' => 'Kozz\Laravel\Facades\Guzzle'
 
+        
     ],
 
 ];
