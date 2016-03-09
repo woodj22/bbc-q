@@ -110,7 +110,7 @@ class SendEmail extends JobModel
 
 
                  $md5Src = md5($src );
-                 $imgName= $md5Src.'png';
+                 $imgName= $md5Src.'.png';
 
               //  $this->data
                  if (strpos($src, '<?php echo $message->embed') !== false) {
@@ -130,7 +130,7 @@ class SendEmail extends JobModel
 
 
                      unset($matches[1][$index]);
-                     $img = '/Applications/XAMPP/xamppfiles/htdocs/Queue/storage'.$imgName;
+                     $img = '/Applications/XAMPP/xamppfiles/htdocs/Queue/storage/'.$imgName;
 
 
                    //  $client = new Client();
