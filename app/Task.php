@@ -17,6 +17,7 @@ class Task extends Model
         'task_type'=>'string',
         'status' => 'integer',
         'run_at'=>'timestamp',
+        'payload'=>'text',
 
     ];
 

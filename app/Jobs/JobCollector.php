@@ -46,14 +46,13 @@ class JobCollector extends controller
 
                 $jobName = 'App\\Jobs\\' . $job->job_type;
                 $jobClassToUse = new $jobName;
-                $jobClassToUse->setup($job->task_id, $job->payload);
 
-                //echo $job->task_type;
+                $jobClassToUse->setup($job->task_id, $job->payload,$job->job_type);
+
+
                 $job_Task_Id = $job->task_id;
 
                 $taskList = Task::where('task_id', $job_Task_Id)->get();
-                //echo $taskList;
-
 
 
                 foreach ($taskList as $task) {
@@ -65,11 +64,11 @@ class JobCollector extends controller
                         $taskName = 'App\\Jobs\\Tasks\\' . $task->task_type;
                         $taskClassToUse = new $taskName;
                         $taskClassToUse->setTaskId($job->task_id);
-                        echo "hello world";
-                        $taskClassToUse->run($job->payload);
+                        $taskClassToUse->setHTML($job->job_type);
+
+                        $taskClassToUse->run($task->payload);
                         $jStatus = $taskClassToUse->getStatus();
                         $jTime = $taskClassToUse->getTime();
-
 
                         Task::where('id', $task->id)->update(['status' => 0]);
 

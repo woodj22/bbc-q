@@ -11,10 +11,11 @@ use App\Jobs\Tasks\SendEmail;
 
 class ReminderEmail extends SendEmail
 {
-
    // protected $params;
 
-public function index ($payload){
+public function index (){
+
+
 
 
 

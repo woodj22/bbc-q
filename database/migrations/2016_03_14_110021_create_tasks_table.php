@@ -19,6 +19,7 @@ class CreateTasksTable extends Migration
             $table->dateTime('run_at');
             $table->integer('status');
             $table->string('task_type');
+            $table->text('payload');
             $table->timestamps();
         });
     }

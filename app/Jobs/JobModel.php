@@ -18,7 +18,8 @@ abstract class JobModel
     protected  $statusVar ;
     abstract protected function activate();
     protected $taskIdVar;
-    abstract protected function setup($taskId,$payload);
+    protected $htmlPage;
+    abstract protected function setup($taskId,$payload,$job_type);
 
 
     function decodeJson($payload)
@@ -57,4 +58,16 @@ abstract class JobModel
 
         return  $this->statusVar;
     }
+
+
+    public Function setHTML($htmlPage){
+        //$htmlPage = "this is html page";
+        $this->htmlPage = $htmlPage;
+    }
+
+    public Function getHTML(){
+
+        return $this->htmlPage;
+    }
+
 }

@@ -157,6 +157,8 @@
         <td></td>
         <td class="container" bgcolor="#FFFFFF">
             <img src="<?php echo $message->embed('/Applications/XAMPP/xamppfiles/htdocs/Queue/storage/882bf4bf9e7e052bcee05bc0e2b217c2.png'); ?>">
+            <img src="<?php echo $message->embed('/Applications/XAMPP/xamppfiles/htdocs/Queue/storage/665b1984999c597772a5b49c418b7daa.png'); ?>">
+
 
 
 
@@ -165,11 +167,11 @@
                 <table>
                     <tr>
                         <td>
-                            <p>Hi </p>s
+                            <p>Hi {{$name}} </p>s
                             <p></p>
                             <h1></h1>
                             <p></p>
-                            <h2>from: </h2>
+                            <h2>from: <?php echo "hello world" ;?></h2>
 
                             <!-- button -->
                             <table class="btn-primary" cellpadding="0" cellspacing="0" border="0">
