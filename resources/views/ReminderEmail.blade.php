@@ -180,6 +180,9 @@
                                     </td>
                                 </tr>
                             </table>
+
+
+            </div>
                             <!-- /button -->
     <tr>
         <td></td>
@@ -203,6 +206,7 @@
     </tr>
 </table>
 <!-- /footer -->
+
 
 </body>
 </html>

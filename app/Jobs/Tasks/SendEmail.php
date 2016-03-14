@@ -28,7 +28,6 @@ class SendEmail extends JobModel
 {
     public $payloadData;
     public $htmlPage;
-    public $initialVar=0;
 
 
     public function setup($taskId, $payload,$job_type)
@@ -173,11 +172,6 @@ class SendEmail extends JobModel
 
     }
 
-
-
-public function setData($Data){
-
-}
 
 
 

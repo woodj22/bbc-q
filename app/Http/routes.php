@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 Route::resource('api/jobs', 'JobController', ['only' => ['index', 'show', 'store', 'destroy']]);
 
-Route::get('api/jobs', 'JobController@runJobCollector');
+Route::get('api/jobs', 'JobController@searchTable');
 
 Route::get('api/attach', 'JobController@getAttachments');
 

@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Filesystem\Filesystem;
 use App\Jobs\Tasks;
-
+use Carbon;
 use App\Job;
 use App\Task;
 
@@ -35,6 +35,7 @@ class JobCollector extends controller
     {
 
 
+
         $jobList = Job::all();
         // echo $jobList;
 
@@ -44,36 +45,47 @@ class JobCollector extends controller
             if ($job->status == true) {
 
 
-                $jobName = 'App\\Jobs\\' . $job->job_type;
-                $jobClassToUse = new $jobName;
+                $mytime = Carbon\Carbon::now();
 
-                $jobClassToUse->setup($job->task_id, $job->payload,$job->job_type);
-
-
-                $job_Task_Id = $job->task_id;
-
-                $taskList = Task::where('task_id', $job_Task_Id)->get();
+                $runAtTime = $mytime::createFromTimestamp($job->run_at);
 
 
-                foreach ($taskList as $task) {
+                if($mytime >=$runAtTime) {
+
+                    echo "its running";
+
+                    $jobName = 'App\\Jobs\\' . $job->job_type;
+                    $jobClassToUse = new $jobName;
 
 
-                    if ($task->status == true) {
+
+                    $jobClassToUse->setup($job->task_id, $job->payload, $job->job_type);
+                    $job_Task_Id = $job->task_id;
 
 
-                        $taskName = 'App\\Jobs\\Tasks\\' . $task->task_type;
-                        $taskClassToUse = new $taskName;
-                        $taskClassToUse->setTaskId($job->task_id);
-                        $taskClassToUse->setHTML($job->job_type);
+                    $taskList = Task::where('task_id', $job_Task_Id)->get();
 
-                        $taskClassToUse->run($task->payload);
-                        $jStatus = $taskClassToUse->getStatus();
-                        $jTime = $taskClassToUse->getTime();
 
-                        Task::where('id', $task->id)->update(['status' => 0]);
+                    foreach ($taskList as $task) {
+
+
+                        if ($task->status == true) {
+
+
+                            $taskName = 'App\\Jobs\\Tasks\\' . $task->task_type;
+                            $taskClassToUse = new $taskName;
+                            $taskClassToUse->setTaskId($job->task_id);
+                            $taskClassToUse->setHTML($job->job_type);
+
+                            $taskClassToUse->run($task->payload);
+                            $jStatus = $taskClassToUse->getStatus();
+                            $jTime = $taskClassToUse->getTime();
+
+                            Task::where('id', $task->id)->update(['status' => 0]);
+
+                        }
 
                     }
-
                 }
 
 
