@@ -19,6 +19,7 @@ class CreateJobsTable extends Migration
             $table->text('payload');
             $table->integer('status');
             $table->dateTime('run_at');
+            $table->integer('recurring');
             $table->timestamps();
         });
     }

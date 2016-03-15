@@ -16,6 +16,7 @@ class Job extends Model
         'payload'=>'text',
         'status'=>'integer',
         'run_at'=>'timestamp',
+        'recurring'=>'integer'
 
     ];
 

@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Jobs\JobCollector;
+use App\http\Controllers\JobController;
 class JobListener extends Command
 {
     /**
@@ -25,9 +25,9 @@ class JobListener extends Command
      *
      * @return void
      */
-    public function __construct(JobCollector $jobCollector)
+    public function __construct(JobController $jobController)
     {
-           $this->jobCollector= $jobCollector;
+           $this->jobController= $jobController;
         parent::__construct();
     }
 
@@ -38,9 +38,9 @@ class JobListener extends Command
      */
     public function handle()
     {
-         $this->line('php output:  ');
-         $this->jobCollector->searchTable();
-         $this->line('');
+         //$this->line('php output:  ');
+         $this->jobController->searchTable();
+      //   $this->line('');
 
 
     }

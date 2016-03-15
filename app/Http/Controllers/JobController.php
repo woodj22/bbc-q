@@ -56,11 +56,12 @@ class JobController extends RestController
 
             if ($job->status == true) {
 
-                $mytime = Carbon\Carbon::now();
-                $runAtTime = $mytime::createFromTimestamp($job->run_at);
+                $myTime = Carbon\Carbon::now();
+                $runAtTime = $myTime::createFromTimestamp($job->run_at);
 
-
-                if($mytime >=$runAtTime) {
+                echo "mtime: ".$myTime;
+                echo "runAtTim: ".$runAtTime;
+                if($myTime >=$runAtTime) {
 
                     echo "its running";
 
@@ -68,6 +69,7 @@ class JobController extends RestController
                     $jobClassToUse = new $jobName;
                     $jobClassToUse->setup($job->task_id, $job->payload, $job->job_type);
                     $job_Task_Id = $job->task_id;
+
 
 
                     $taskList = Task::where('task_id', $job_Task_Id)->get();
@@ -92,6 +94,28 @@ class JobController extends RestController
 
 
                         }
+
+                    }
+
+                    if($job->recurring>0){
+                        echo "this job is recurring".$job->recurring;
+                        $recurringJobEntry = new Job();
+
+                       /* Job::create(['run_at' => $runAtTime->addMinutes($job->recurring),
+                            'job_type' => $job->job_type,
+                            'recurring' => $job->recurring,
+                            'payload' => $job->payload
+
+                        ]);*/
+                        $recurringJobEntry->run_at = $runAtTime->addMinutes($job->recurring);
+                        $recurringJobEntry->job_type = $job->job_type;
+                        $recurringJobEntry->recurring =$job->recurring;
+                        $recurringJobEntry->payload =$job->payload;
+                        $recurringJobEntry->status = 1;
+                        $recurringJobEntry->task_id = $job->task_id +1;
+
+
+                        $recurringJobEntry->save();
 
                     }
                     Job::where('id', $job->id)->update(['status' => 0]);
