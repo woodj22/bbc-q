@@ -6,11 +6,11 @@
  * Time: 15:13
  */
 
-namespace App\Jobs;
+namespace App\Tasks;
 use Faker\Provider\DateTime;
 use Carbon\Carbon;
 
-abstract class JobModel
+abstract class TaskModel
 
 {
    // public $params;

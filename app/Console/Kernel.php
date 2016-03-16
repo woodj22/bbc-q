@@ -14,10 +14,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // Commands\Inspire::class,
-        Commands\CallFile::class,
-        
-        commands\JobListener::class
+        \App\Console\Commands\Inspire::class,
+        //Commands\CallFile::class,
+
+        \App\Console\Commands\JobListener::class
     ];
 
     /**
@@ -28,9 +28,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+         $schedule->command('inspire')->everyMinute();
+
+
             $schedule->command('queue:listen')->everyMinute();
+
 
 
 

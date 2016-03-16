@@ -10,15 +10,10 @@
 class JobCompletion{
 
 
-
     public function index (){
 
 
-
-
-
 }
-
 
 
 

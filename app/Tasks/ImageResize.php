@@ -5,11 +5,12 @@
  * Date: 01/03/2016
  * Time: 14:17
  */
-namespace App\Jobs\Tasks;
-use App\Jobs\JobModel;
+namespace App\Tasks;
+
+use App\Tasks\TaskModel;
 use App\Task;
 
-class ImageResize extends JobModel{
+class ImageResize extends TaskModel{
 
 
 public function run ($payload){
@@ -22,7 +23,7 @@ public function run ($payload){
 
     }
 
-    public function  setup($taskId,$payload){
+    public function  setup($taskId,$payload,$job_type){
 
 
 

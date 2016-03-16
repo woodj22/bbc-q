@@ -6,7 +6,7 @@
  * Time: 13:24
  */
 namespace App\Jobs;
-use App\Jobs\Tasks\SendEmail;
+use App\Tasks\SendEmail;
 
 
 class ReminderEmail extends SendEmail
@@ -14,10 +14,6 @@ class ReminderEmail extends SendEmail
    // protected $params;
 
 public function index (){
-
-
-
-
 
 
 }

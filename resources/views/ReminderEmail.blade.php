@@ -156,18 +156,13 @@
     <tr>
         <td></td>
         <td class="container" bgcolor="#FFFFFF">
-            <img src="<?php echo $message->embed('/Applications/XAMPP/xamppfiles/htdocs/Queue/storage/882bf4bf9e7e052bcee05bc0e2b217c2.png'); ?>">
-            <img src="<?php echo $message->embed('/Applications/XAMPP/xamppfiles/htdocs/Queue/storage/665b1984999c597772a5b49c418b7daa.png'); ?>">
-
-
-
 
             <!-- content -->
             <div class="content">
                 <table>
                     <tr>
                         <td>
-                            <p>Hi {{$name}} </p>s
+                            <p>Hi {{$name}} </p>
                             <p></p>
                             <h1></h1>
                             <p></p>

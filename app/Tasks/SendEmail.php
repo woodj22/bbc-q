@@ -1,0 +1,142 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: JoeWood
+ * Date: 23/02/2016
+ * Time: 16:56
+ */
+namespace App\Tasks;
+
+
+use App\Task;
+use Illuminate\Http\Request;
+use App\Http\Requests\EmailRequest;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
+//use Storage;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Guzzle;
+use App\Tasks\TaskModel;
+use App\Job;
+
+use App\user;
+use Illuminate\View\View;
+
+class SendEmail extends TaskModel
+
+{
+    public $payloadData;
+    public $htmlPage;
+
+
+    public function setup($taskId, $payload, $job_type)
+
+
+    {
+
+        $this->htmlPage = $job_type;
+        $this->params = parent::decodeJson($payload);
+        echo $this->getHTML();
+
+        foreach ($this->params['info'] as $i) {
+
+            $t = new Task;
+            $t->task_id = $taskId;
+            $t->status = 1;
+            $t->task_type = 'SendEmail';
+            $t->payload = $i;
+            $t->save();
+
+        }
+
+    }
+
+    public function run($payload)
+    {
+        $this->payloadData = $payload;
+        $this->activate();
+
+    }
+
+
+    public function activate()
+
+    {
+
+
+        $this->getAttachments();
+        $data = ['name' => $this->payloadData];
+        Mail::send($this->htmlPage, $data, function ($message) {
+
+            $message->from('ex@example.co.uk', 'Laravel');
+            $message->to('joe.wood@bbc.co.uk');
+
+
+        });
+
+
+    }
+
+
+    public function getAttachments()
+
+    {
+
+
+        $html = file_get_contents('/Applications/XAMPP/htdocs/Queue/resources/views/' . $this->getHTML() . '.blade.php');
+   //    $html = Storage::get($this->getHTML().'.blade.php');
+
+      //  echo $html;
+        if (preg_match_all('/<img[^>]*src="([^"]*)"/i', $html, $matches)) {
+
+            foreach ($matches[0] as $index => $img) {
+
+
+                $src = $matches[1][$index];
+                $md5Src = md5($src);
+                $imgName = $md5Src . '.png';
+             //   echo $src;
+
+                if (strpos($src, '<?php echo $message->embed')!== false) {
+
+                    //echo "img src exists exists";
+                    $result = count($matches);
+                    echo $matches[1][$index];
+                    $img = null;
+                   // unset($matches[1][$index]);
+
+                } else {
+                        echo "guzzle is activated";
+                    unset($matches[1][$index]);
+                    $img = storage_path() . "/" . $imgName;
+                    // echo $img;
+                    $request = \Guzzle::get($src, [
+                        'verify' => false,
+                        'exceptions' => false,
+                        // 'cookies' => true,
+                        'proxy' => 'www-cache.reith.bbc.co.uk:80',
+                        'save_to' => $img,
+                    ]);
+
+                    $html = str_replace($src, '<?php echo $message->embed(' . "'" . $img . "'" . '); ?>', $html);
+                    file_put_contents(base_path() . '/resources/views/' . $this->getHTML() . ".blade.php", $html);
+
+                    //  $files = Storage::files(base_path());
+                    //   echo implode($files,",");
+                    //   Storage::put(base_path().'/resources/views/'.$this->getHTML().".blade.php", $html);
+
+                }
+
+            }
+        } else {
+            echo "is no img tag";
+            return;
+        }
+
+
+    }
+
+
+}
