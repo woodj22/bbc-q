@@ -156,13 +156,17 @@
     <tr>
         <td></td>
         <td class="container" bgcolor="#FFFFFF">
+            <img src="<?php echo $message->embed('/Applications/XAMPP/xamppfiles/htdocs/Queue/storage/a05e547f693014e6f8fbb5f67f4f17d5.png'); ?>">
+            <img src="<?php echo $message->embed('/Applications/XAMPP/xamppfiles/htdocs/Queue/storage/ca878ac10e7989e398466050db79bc64.png'); ?>">
+
+           <img src="<?php echo $message->embed('/Applications/XAMPP/xamppfiles/htdocs/Queue/storage/639c3d3f727f9a42c6c141a759d49f5c.png'); ?>">
 
             <!-- content -->
             <div class="content">
                 <table>
                     <tr>
                         <td>
-                            <p>Hi {{$name}} </p>
+                            <p>Hi {{$givenName}}</p>
                             <p></p>
                             <h1></h1>
                             <p></p>

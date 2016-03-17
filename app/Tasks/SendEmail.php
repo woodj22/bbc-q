@@ -23,12 +23,14 @@ use App\Job;
 
 use App\user;
 use Illuminate\View\View;
+use App\People;
 
 class SendEmail extends TaskModel
 
 {
     public $payloadData;
     public $htmlPage;
+    public $data;
 
 
     public function setup($taskId, $payload, $job_type)
@@ -60,14 +62,31 @@ class SendEmail extends TaskModel
 
     }
 
-
     public function activate()
 
     {
 
 
         $this->getAttachments();
-        $data = ['name' => $this->payloadData];
+
+
+        $peopleData = People::where('samAccountName', $this->payloadData)->get();
+
+        $data = [
+            'samAccountName' => $peopleData[0]['samAccountName'],
+            'cn' => $peopleData[0]['cn'],
+            'department' => $peopleData[0]['department'],
+            'division' => $peopleData[0]['division'],
+            'surname' => $peopleData[0]['surname'],
+            'givenName' => $peopleData[0]['givenName'],
+            'displayName' => $peopleData[0]['displayName'],
+            'employeeID' => $peopleData[0]['employeeID'],
+            'mail' => $peopleData[0]['mail'],
+            'personalTitle' => $peopleData[0]['personalTitle'],
+
+        ];
+
+
         Mail::send($this->htmlPage, $data, function ($message) {
 
             $message->from('ex@example.co.uk', 'Laravel');
@@ -75,7 +94,6 @@ class SendEmail extends TaskModel
 
 
         });
-
 
     }
 
@@ -85,10 +103,10 @@ class SendEmail extends TaskModel
     {
 
 
-        $html = file_get_contents('/Applications/XAMPP/htdocs/Queue/resources/views/' . $this->getHTML() . '.blade.php');
-   //    $html = Storage::get($this->getHTML().'.blade.php');
+        $html = file_get_contents('/Applications/XAMPP/htdocs/Queue/resources/views/' . $this->htmlPage . '.blade.php');
+        //    $html = Storage::get($this->htmlPage.'.blade.php');
 
-      //  echo $html;
+        //  echo $html;
         if (preg_match_all('/<img[^>]*src="([^"]*)"/i', $html, $matches)) {
 
             foreach ($matches[0] as $index => $img) {
@@ -97,18 +115,15 @@ class SendEmail extends TaskModel
                 $src = $matches[1][$index];
                 $md5Src = md5($src);
                 $imgName = $md5Src . '.png';
-             //   echo $src;
 
-                if (strpos($src, '<?php echo $message->embed')!== false) {
+                if (strpos($src, '<?php echo $message->embed') !== false) {
 
-                    //echo "img src exists exists";
-                    $result = count($matches);
+
                     echo $matches[1][$index];
                     $img = null;
-                   // unset($matches[1][$index]);
 
                 } else {
-                        echo "guzzle is activated";
+                    echo "guzzle is activated";
                     unset($matches[1][$index]);
                     $img = storage_path() . "/" . $imgName;
                     // echo $img;
@@ -121,7 +136,7 @@ class SendEmail extends TaskModel
                     ]);
 
                     $html = str_replace($src, '<?php echo $message->embed(' . "'" . $img . "'" . '); ?>', $html);
-                    file_put_contents(base_path() . '/resources/views/' . $this->getHTML() . ".blade.php", $html);
+                    file_put_contents(base_path() . '/resources/views/' . $this->htmlPage . ".blade.php", $html);
 
                     //  $files = Storage::files(base_path());
                     //   echo implode($files,",");
@@ -131,7 +146,7 @@ class SendEmail extends TaskModel
 
             }
         } else {
-            echo "is no img tag";
+
             return;
         }
 

@@ -18,12 +18,11 @@ use App\Task;
 use App\Tasks;
 
 
-
 class JobController extends RestController
 {
     protected $modelType = 'App\Job';
-    protected $postFields = ['job_type', 'payload','status'];
-    protected $putFields = ['job_type', 'payload','status'];
+    protected $postFields = ['job_type', 'payload', 'status'];
+    protected $putFields = ['job_type', 'payload', 'status'];
     protected $allowedFilters = ['job_type',];
 
     protected $allowedSearchFilters = [
@@ -37,9 +36,10 @@ class JobController extends RestController
     }
 
 
-    public function runJobCollector(){
+    public function runJobCollector()
+    {
 
-            //this method is now obsolete as seach table is done below and their is no jobCollector class.
+        //this method is now obsolete as seach table is done below and their is no jobCollector class.
         $jobCollector = new JobCollector();
         $jobCollector->searchTable();
 
@@ -61,16 +61,16 @@ class JobController extends RestController
                 $myTime = Carbon\Carbon::now();
                 $runAtTime = $myTime::createFromTimestamp($job->run_at);
 
-                if($myTime >=$runAtTime) {
+                if ($myTime >= $runAtTime) {
 
 
-                    if(class_exists ('App\\Jobs\\'.$job->job_type)) {
+                    if (class_exists('App\\Jobs\\' . $job->job_type)) {
 
                         $jobName = 'App\\Jobs\\' . $job->job_type;
                         $jobClassToUse = new $jobName;
                         $jobClassToUse->setup($job->task_id, $job->payload, $job->job_type);
 
-                   }else{
+                    } else {
 
                         echo "Job class does not exist!! Check namespace and make sure it is located in App\\Jobs folder";
                     }
@@ -79,23 +79,23 @@ class JobController extends RestController
                     $this->searchTaskTable($job);
 
 
-                    if($job->recurring>0){
-                        echo "this job is recurring".$job->recurring;
+                    if ($job->recurring > 0) {
+                        echo "this job is recurring" . $job->recurring;
 
 
                         //creates and fills the new recurring entry into the job table.
-                                    // The below line desides if the recurring event starts after the the run_at value
-                                    // of the original job or if it happens from when it was run.
-                                    $recurringJobEntry = new Job();
-                                    $recurringJobEntry->run_at = $runAtTime->addMinutes($job->recurring);
-                                    $recurringJobEntry->job_type = $job->job_type;
-                                    $recurringJobEntry->recurring =$job->recurring;
-                                    $recurringJobEntry->payload =$job->payload;
-                                    $recurringJobEntry->status = 1;
-                                    $recurringJobEntry->task_id = $job->task_id +1;
-                                    $recurringJobEntry->save();
+                        // The below line desides if the recurring event starts after the the run_at value
+                        // of the original job or if it happens from when it was run.
+                        $recurringJobEntry = new Job();
+                        $recurringJobEntry->run_at = $runAtTime->addMinutes($job->recurring);
+                        $recurringJobEntry->job_type = $job->job_type;
+                        $recurringJobEntry->recurring = $job->recurring;
+                        $recurringJobEntry->payload = $job->payload;
+                        $recurringJobEntry->status = 1;
+                        $recurringJobEntry->task_id = $job->task_id + 1;
+                        $recurringJobEntry->save();
                     }
-                    Job::where('id', $job->id)->update(['status' => 0]);
+                    Job::where('id', $job->id)->update(['status' => 1]);
 
                 }
 
@@ -108,8 +108,8 @@ class JobController extends RestController
     }
 
 
-
-    public function searchTaskTable($job){
+    public function searchTaskTable($job)
+    {
 
         $taskList = Task::where('task_id', $job->task_id)->get();
 
@@ -137,10 +137,7 @@ class JobController extends RestController
         }
 
 
-
-}
-
-
+    }
 
 
 }
