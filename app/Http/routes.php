@@ -19,6 +19,13 @@ Route::get('api/jobs', 'JobController@searchTable');
 
 Route::get('api/attach', 'JobController@getAttachments');
 
+Route::get('api/unfinished', 'JobController@catchUnfinishedJobs');
+
+
+
+
+
+
 
 //Route::get('api/email', 'EmailController@handle');
 

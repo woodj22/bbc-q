@@ -166,7 +166,7 @@
                 <table>
                     <tr>
                         <td>
-                            <p>Hi {{$givenName}}</p>
+                            <p>Hi {{ $givenName }}</p>
                             <p></p>
                             <h1></h1>
                             <p></p>

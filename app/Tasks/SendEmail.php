@@ -30,8 +30,7 @@ class SendEmail extends TaskModel
 {
     public $payloadData;
     public $htmlPage;
-    public $data;
-
+    public $errorExists;
 
     public function setup($taskId, $payload, $job_type)
 
@@ -40,7 +39,6 @@ class SendEmail extends TaskModel
 
         $this->htmlPage = $job_type;
         $this->params = parent::decodeJson($payload);
-        echo $this->getHTML();
 
         foreach ($this->params['info'] as $i) {
 
@@ -50,14 +48,17 @@ class SendEmail extends TaskModel
             $t->task_type = 'SendEmail';
             $t->payload = $i;
             $t->save();
-
         }
+        $this->payLoadData = $i;
+
 
     }
 
     public function run($payload)
     {
+
         $this->payloadData = $payload;
+
         $this->activate();
 
     }
@@ -66,12 +67,10 @@ class SendEmail extends TaskModel
 
     {
 
-
         $this->getAttachments();
 
 
         $peopleData = People::where('samAccountName', $this->payloadData)->get();
-
         $data = [
             'samAccountName' => $peopleData[0]['samAccountName'],
             'cn' => $peopleData[0]['cn'],
@@ -87,13 +86,23 @@ class SendEmail extends TaskModel
         ];
 
 
-        Mail::send($this->htmlPage, $data, function ($message) {
+    if (Mail::send($this->htmlPage, $data, function ($message) use ($data) {
 
-            $message->from('ex@example.co.uk', 'Laravel');
-            $message->to('joe.wood@bbc.co.uk');
+        $message->from('ex@example.co.uk', 'Laravel');
+        $message->to($data['mail']);
 
 
-        });
+    })
+
+    ) {
+
+        echo "mail has sent";
+
+    } else {
+
+        return;
+    }
+
 
     }
 
@@ -104,9 +113,7 @@ class SendEmail extends TaskModel
 
 
         $html = file_get_contents('/Applications/XAMPP/htdocs/Queue/resources/views/' . $this->htmlPage . '.blade.php');
-        //    $html = Storage::get($this->htmlPage.'.blade.php');
 
-        //  echo $html;
         if (preg_match_all('/<img[^>]*src="([^"]*)"/i', $html, $matches)) {
 
             foreach ($matches[0] as $index => $img) {
@@ -119,7 +126,6 @@ class SendEmail extends TaskModel
                 if (strpos($src, '<?php echo $message->embed') !== false) {
 
 
-                    echo $matches[1][$index];
                     $img = null;
 
                 } else {
@@ -138,9 +144,6 @@ class SendEmail extends TaskModel
                     $html = str_replace($src, '<?php echo $message->embed(' . "'" . $img . "'" . '); ?>', $html);
                     file_put_contents(base_path() . '/resources/views/' . $this->htmlPage . ".blade.php", $html);
 
-                    //  $files = Storage::files(base_path());
-                    //   echo implode($files,",");
-                    //   Storage::put(base_path().'/resources/views/'.$this->getHTML().".blade.php", $html);
 
                 }
 
@@ -151,6 +154,19 @@ class SendEmail extends TaskModel
         }
 
 
+    }
+
+    public function setError($err){
+
+
+        $this->errorExists = $err;
+
+
+    }
+
+    public function getError (){
+
+        return   $this->errorExists;
     }
 
 

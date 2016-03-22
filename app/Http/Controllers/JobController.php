@@ -13,7 +13,7 @@ use Carbon;
 
 use App\Jobs;
 use App\Job;
-
+use Illuminate\Support\Facades\View;
 use App\Task;
 use App\Tasks;
 
@@ -24,6 +24,7 @@ class JobController extends RestController
     protected $postFields = ['job_type', 'payload', 'status'];
     protected $putFields = ['job_type', 'payload', 'status'];
     protected $allowedFilters = ['job_type',];
+    protected $exceptionCaught;
 
     protected $allowedSearchFilters = [
         'job_type',
@@ -39,7 +40,7 @@ class JobController extends RestController
     public function runJobCollector()
     {
 
-        //this method is now obsolete as seach table is done below and their is no jobCollector class.
+        //this method is now obsolete as search table is done below and their is no jobCollector class.
         $jobCollector = new JobCollector();
         $jobCollector->searchTable();
 
@@ -54,9 +55,9 @@ class JobController extends RestController
 
         foreach ($jobList as $job) {
 
-            if ($job->status == 1) {
+            if ($job->status >= 1) {
 
-                Job::where('id', $job->id)->update(['status' => 1]);
+                Job::where('id', $job->id)->update(['status' => 2]);
 
                 $myTime = Carbon\Carbon::now();
                 $runAtTime = $myTime::createFromTimestamp($job->run_at);
@@ -75,9 +76,7 @@ class JobController extends RestController
                         echo "Job class does not exist!! Check namespace and make sure it is located in App\\Jobs folder";
                     }
 
-
                     $this->searchTaskTable($job);
-
 
                     if ($job->recurring > 0) {
                         echo "this job is recurring" . $job->recurring;
@@ -117,26 +116,40 @@ class JobController extends RestController
         foreach ($taskList as $task) {
 
 
-            if ($task->status == true) {
+            if ($task->status >= 1) {
                 Task::where('id', $task->id)->update(['status' => 2]);
-
                 $taskName = 'App\\Tasks\\' . $task->task_type;
                 $taskClassToUse = new $taskName;
                 $taskClassToUse->setTaskId($job->task_id);
                 $taskClassToUse->setHTML($job->job_type);
 
-                $taskClassToUse->run($task->payload);
-                $jStatus = $taskClassToUse->getStatus();
-                $jTime = $taskClassToUse->getTime();
 
-                Task::where('id', $task->id)->update(['status' => 0]);
+    try {
+        $taskClassToUse->run($task->payload);
+    }catch(\Exception $e) {
+        $strError = 'failed to run task with id: '.$task->id . $e->getMessage();
+        echo $strError;
+        Task::where('id', $task->id)->update(['status' => 2]);
+            $this->exceptionCaught=true;
 
+    }
+                if (!$this->exceptionCaught) {
+                    Task::where('id', $task->id)->update(['status' => 0]);
+
+                }
 
             }
 
         }
 
+    }
 
+
+    public function catchUnfinishedJobs(){
+       $unfinishedList = Job::where('status',2)->get();
+        $view = View::make('list')->with("unfinishedList",$unfinishedList);
+
+        return $view;
     }
 
 
