@@ -15,21 +15,7 @@ use Illuminate\Http\Request;
 
 Route::resource('api/jobs', 'JobController', ['only' => ['index', 'show', 'store', 'destroy']]);
 
-Route::get('api/jobs', 'JobController@searchTable');
+Route::get('api/do', 'JobController@runJobTable');
 
-Route::get('api/attach', 'JobController@getAttachments');
-
-Route::get('api/unfinished', 'JobController@catchUnfinishedJobs');
-
-
-
-
-
-
-
-//Route::get('api/email', 'EmailController@handle');
-
-
-
-
+Route::resource('api/tasks', 'TaskController', ['only' => ['index', 'show']]);
 

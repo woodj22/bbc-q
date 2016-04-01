@@ -32,6 +32,11 @@ class SendEmail extends TaskModel
     public $htmlPage;
     public $errorExists;
 
+    function isJson($string) {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+
     public function setup($taskId, $payload, $job_type)
 
 
@@ -39,17 +44,19 @@ class SendEmail extends TaskModel
 
         $this->htmlPage = $job_type;
         $this->params = parent::decodeJson($payload);
+        if($this->isJson($payload)) {
+            foreach ($this->params['info'] as $i) {
 
-        foreach ($this->params['info'] as $i) {
-
-            $t = new Task;
-            $t->task_id = $taskId;
-            $t->status = 1;
-            $t->task_type = 'SendEmail';
-            $t->payload = $i;
-            $t->save();
+                $t = new Task;
+                $t->task_id = $taskId;
+                $t->status = 1;
+                $t->task_type = 'SendEmail';
+                $t->payload = $i;
+                $t->save();
+            }
+            $this->payLoadData = $i;
         }
-        $this->payLoadData = $i;
+
 
 
     }
@@ -96,7 +103,6 @@ class SendEmail extends TaskModel
 
     ) {
 
-        echo "mail has sent";
 
     } else {
 

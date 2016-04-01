@@ -25,6 +25,7 @@ class JobController extends RestController
     protected $putFields = ['job_type', 'payload', 'status'];
     protected $allowedFilters = ['job_type',];
     protected $exceptionCaught;
+    protected $errorList = [];
 
     protected $allowedSearchFilters = [
         'job_type',
@@ -46,8 +47,7 @@ class JobController extends RestController
 
     }
 
-    public function searchTable()
-
+    public function runJobTable()
 
     {
 
@@ -56,8 +56,6 @@ class JobController extends RestController
         foreach ($jobList as $job) {
 
             if ($job->status >= 1) {
-
-                Job::where('id', $job->id)->update(['status' => 2]);
 
                 $myTime = Carbon\Carbon::now();
                 $runAtTime = $myTime::createFromTimestamp($job->run_at);
@@ -71,13 +69,22 @@ class JobController extends RestController
                         $jobClassToUse = new $jobName;
                         $jobClassToUse->setup($job->task_id, $job->payload, $job->job_type);
 
+
                     } else {
 
                         echo "Job class does not exist!! Check namespace and make sure it is located in App\\Jobs folder";
+
                     }
 
-                    $this->searchTaskTable($job);
 
+                    Job::where('task_id', $job->task_id)->update(['status' => 2]);
+
+                    try {
+                        $this->runTaskTable($job);
+                    } catch (\Exception $e) {
+                        echo "job has carried on ";
+
+                    }
                     if ($job->recurring > 0) {
                         echo "this job is recurring" . $job->recurring;
 
@@ -91,10 +98,9 @@ class JobController extends RestController
                         $recurringJobEntry->recurring = $job->recurring;
                         $recurringJobEntry->payload = $job->payload;
                         $recurringJobEntry->status = 1;
-                        $recurringJobEntry->task_id = $job->task_id + 1;
                         $recurringJobEntry->save();
                     }
-                    Job::where('id', $job->id)->update(['status' => 1]);
+
 
                 }
 
@@ -107,36 +113,61 @@ class JobController extends RestController
     }
 
 
-    public function searchTaskTable($job)
+    public function runTaskTable($job)
     {
 
-        $taskList = Task::where('task_id', $job->task_id)->get();
 
+        // $taskList = Task::where('task_id', $job->task_id)->get();
+        $taskList = Task::all();
 
         foreach ($taskList as $task) {
 
 
+            $this->exceptionCaught = false;
+
+
             if ($task->status >= 1) {
-                Task::where('id', $task->id)->update(['status' => 2]);
+                // Task::where('id', $task->id)->update(['status' => 2]);
                 $taskName = 'App\\Tasks\\' . $task->task_type;
                 $taskClassToUse = new $taskName;
-                $taskClassToUse->setTaskId($job->task_id);
+                //   $taskClassToUse->setTaskId($job->task_id);
+
+                if ($task->task_id > 1) {
+                    // echo $task->task_id;
+                }
                 $taskClassToUse->setHTML($job->job_type);
 
 
-    try {
-        $taskClassToUse->run($task->payload);
-    }catch(\Exception $e) {
-        $strError = 'failed to run task with id: '.$task->id . $e->getMessage();
-        echo $strError;
-        Task::where('id', $task->id)->update(['status' => 2]);
-            $this->exceptionCaught=true;
+                try {
 
-    }
-                if (!$this->exceptionCaught) {
-                    Task::where('id', $task->id)->update(['status' => 0]);
 
-                }
+                    $taskClassToUse->run($task->payload);
+                } catch (\Exception $e) {
+                    $strError = 'failed to run task with id: ' . $task->id . $e->getMessage();
+                    //echo $strError;
+                    array_push($this->errorList, $task->id . "Error: " . $e->getMessage());
+
+                    //array_push($this->errorList,$e->getMessage());
+
+                    echo $strError;
+                    Task::where('id', $task->id)->update(['status' => 2]);
+                    Job::where('task_id', $task->task_id)->update(['errorMessage' => $strError]);
+                    Job::where('task_id', $task->task_id)->update(['status' => 2]);
+
+                    $this->exceptionCaught = true;
+                    continue;
+
+                }      //  echo "this is task id  ".$task->task_id;
+                $impErrorList = implode(",", $this->errorList);
+                $strError = '   failed to run tasks with id: ' . $impErrorList;
+
+                Job::where('task_id', $task->task_id)->update(['errorMessage' => $strError]);
+                //to make work fully, change status below to '0'. This is set to one for development purposes so that it dosent need to be manually change it.
+                Task::where('id', $task->id)->update(['status' => 0]);
+
+                Task::where('id', $task->id)->update(['status' => 0]);
+                echo "this is job status  " . $job->status;
+
 
             }
 
@@ -145,9 +176,10 @@ class JobController extends RestController
     }
 
 
-    public function catchUnfinishedJobs(){
-       $unfinishedList = Job::where('status',2)->get();
-        $view = View::make('list')->with("unfinishedList",$unfinishedList);
+    public function catchUnfinishedJobs()
+    {
+        $unfinishedList = Job::where('status', 2)->get();
+        $view = View::make('incompleteList')->with("unfinishedList", $unfinishedList);
 
         return $view;
     }

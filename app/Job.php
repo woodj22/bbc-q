@@ -10,13 +10,14 @@ class Job extends Model
 {
 
     protected $casts = [
-        'id' => 'integer',
         'task_id' => 'integer',
         'job_type'=> 'string',
         'payload'=>'text',
         'status'=>'integer',
         'run_at'=>'timestamp',
-        'recurring'=>'integer'
+        'recurring'=>'integer',
+        'errorMessage'=>'text',
+
 
     ];
 

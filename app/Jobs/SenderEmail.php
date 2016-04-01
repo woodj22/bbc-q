@@ -7,7 +7,7 @@
  */
 
 namespace App\Jobs;
-use App\Jobs\SendEmail;
+use App\Tasks\SendEmail;
 
 
 class SenderEmail extends SendEmail

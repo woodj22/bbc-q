@@ -13,14 +13,17 @@ class CreateJobsTable extends Migration
     public function up()
     {
         Schema::create('jobs', function (Blueprint $table) {
-            $table->increments('id');
+            //
+
             $table->string('job_type');
             $table->integer('task_id');
             $table->text('payload');
             $table->integer('status');
             $table->dateTime('run_at');
             $table->integer('recurring');
+            $table->text('errorMessage');
             $table->timestamps();
+
         });
     }
 
