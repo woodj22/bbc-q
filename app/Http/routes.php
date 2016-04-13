@@ -19,3 +19,6 @@ Route::get('api/do', 'JobController@runJobTable');
 
 Route::resource('api/tasks', 'TaskController', ['only' => ['index', 'show']]);
 
+
+Route::get('api/tests', 'JobController@runLdapMapper');
+

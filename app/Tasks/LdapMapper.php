@@ -18,6 +18,7 @@ class LdapMapper
 
     public function __construct($username, $password, $dc, $baseDN)
     {
+
         if (!$username || !$password || !$dc || !$baseDN) {
             return false;
         }
@@ -36,25 +37,36 @@ class LdapMapper
             $this->ldap_connection = $ldapConn;
             $this->baseDN = $baseDN;
 
+
+
             return true;
         }
+
+
+
     }
 
     public function isInGroup($group, $username)
     {
+
+
         $result = ldap_search(
             $this->ldap_connection,
             $this->baseDN,
-            "(samaccountname=" . $username . ")",
+            "(sAMAccountName=" . $username . ")",
             array('memberof')
         );
 
+
+        $group = "CN=Password Expiry 4-6 March 16,OU=P,OU=Distribution Groups,OU=Users and Desktops,OU=London,OU=MTS,DC=national,DC=core,DC=bbc,DC=co,DC=uk";
         $results = ldap_get_entries($this->ldap_connection, $result);
 
         if (count($results)) {
             $results = @$results[0]["memberof"];
-            if (count($results)) {
+
+            if (count($results)){
                 if (in_array($group, $results)) {
+                    echo "my array finder is finannalllyy  working";
                     return true;
                 }
             }
@@ -62,7 +74,6 @@ class LdapMapper
 
         return false;
     }
-
 }
 
 /*
@@ -72,3 +83,6 @@ LDAP_PASSWORD=passwordreset
 LDAP_DC=ldap.national.core.bbc.co.uk
 LDAP_BASEDN=DC=national,DC=core,DC=bbc,DC=co,DC=uk
 */
+
+
+

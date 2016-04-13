@@ -6,7 +6,7 @@
  * Time: 12:25
  */
 namespace App\Jobs;
-use App\Jobs\Tasks\ImageResize;
+use App\Tasks\ImageResize;
 
 
 class ImageJob extends ImageResize

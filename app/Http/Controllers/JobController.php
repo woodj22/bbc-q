@@ -16,6 +16,8 @@ use App\Job;
 use Illuminate\Support\Facades\View;
 use App\Task;
 use App\Tasks;
+use App\Tasks\LdapMapper;
+
 
 
 class JobController extends RestController
@@ -38,18 +40,29 @@ class JobController extends RestController
     }
 
 
-    public function runJobCollector()
+    public function runLdapMapper()
     {
 
-        //this method is now obsolete as search table is done below and their is no jobCollector class.
-        $jobCollector = new JobCollector();
-        $jobCollector->searchTable();
+        $LDAP_BASEDN="DC=national,DC=core,DC=bbc,DC=co,DC=uk";
 
+
+        //this method is now obsolete as search table is done below and their is no jobCollector class.
+        $LdapMapper = new LdapMapper('NATIONAL\passwordreset',"passwordreset","ldap.national.core.bbc.co.uk", $LDAP_BASEDN);
+        $LdapMapper->isInGroup("","woodj22");
     }
 
     public function runJobTable()
 
     {
+
+
+        /*
+[2:00]
+LDAP_USERNAME=NATIONAL\passwordreset
+LDAP_PASSWORD=passwordreset
+LDAP_DC=ldap.national.core.bbc.co.uk
+LDAP_BASEDN=DC=national,DC=core,DC=bbc,DC=co,DC=uk
+*/
 
         $jobList = Job::all();
 

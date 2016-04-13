@@ -10,6 +10,7 @@ class Job extends Model
 {
 
     protected $casts = [
+
         'task_id' => 'integer',
         'job_type'=> 'string',
         'payload'=>'text',
