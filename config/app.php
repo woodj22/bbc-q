@@ -147,16 +147,17 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
         /*
          * Application Service Providers...
          */
+       // App\Providers\ADServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         //App\Providers\Guzzle::class,
                 'Kozz\Laravel\Providers\Guzzle'
+
 
 
      //   Kozz\Laravel\Providers\Guzzle,
@@ -210,7 +211,9 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         
         //'Guzzle' => Illuminate\Support\Facades\Guzzle::Class,
-                'Guzzle' => 'Kozz\Laravel\Facades\Guzzle'
+                'Guzzle' => 'Kozz\Laravel\Facades\Guzzle',
+                'mdt' => 'mdt\Laravel\Facades\Guzzle'
+
 
         
     ],
