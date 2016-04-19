@@ -1,0 +1,1 @@
+INSERT INTO countHistory(`wordCount`,`stringLength`,`dayID`)VALUES(4012,24909,20160419);INSERT INTO countHistory(`wordCount`,`stringLength`,`dayID`)VALUES(4012,24909,20160419);

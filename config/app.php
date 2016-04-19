@@ -150,12 +150,10 @@ return [
         /*
          * Application Service Providers...
          */
-       // App\Providers\ADServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        //App\Providers\Guzzle::class,
                 'Kozz\Laravel\Providers\Guzzle'
 
 
@@ -212,7 +210,6 @@ return [
         
         //'Guzzle' => Illuminate\Support\Facades\Guzzle::Class,
                 'Guzzle' => 'Kozz\Laravel\Facades\Guzzle',
-                'mdt' => 'mdt\Laravel\Facades\Guzzle'
 
 
         
