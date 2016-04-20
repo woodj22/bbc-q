@@ -13,6 +13,14 @@
 
 use Illuminate\Http\Request;
 
+
+Route::post('/api/testMiddle',['middleware' => 'checkKey:READ', function () {
+    return response()->json(['gone though middleware']
+
+    );
+}]);
+
+
 Route::resource('api/jobs', 'JobController', ['only' => ['index', 'show', 'store', 'destroy']]);
 
 Route::get('api/do', 'JobController@runJobTable');

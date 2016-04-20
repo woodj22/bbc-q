@@ -44,7 +44,7 @@ class JobController extends RestController
     {
 
 
-    phpinfo();
+ //   phpinfo();
 
 
         $LDAP_BASEDN="DC=national,DC=core,DC=bbc,DC=co,DC=uk";
@@ -52,7 +52,7 @@ class JobController extends RestController
 
         //this method is now obsolete as search table is done below and their is no jobCollector class.
         $LdapMapper = new LdapMapper('NATIONAL\passwordreset',"passwordreset","ldap.national.core.bbc.co.uk", $LDAP_BASEDN);
-       // echo $LdapMapper->isInGroup("","woodj22");
+        echo $LdapMapper->isInGroup("","woodj22");
 
 
     }

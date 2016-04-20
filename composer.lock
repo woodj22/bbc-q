@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1d3e011b259c81cf0a465b61d83f6f15",
-    "content-hash": "4c10ce224927e42b2d2ac17696d6b635",
+    "hash": "0692132c7998ddc2b58a7e8b30acb4d8",
+    "content-hash": "234a4597f55d77412b5fc3ec7c5011a6",
     "packages": [
         {
             "name": "Mdt/Components",
