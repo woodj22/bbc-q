@@ -9,7 +9,8 @@
         "laravel/framework": "5.2.*",
         "guzzlehttp/guzzle": "~6.0",
         "kozz/laravel-guzzle-provider": "~6.0",
-        "Mdt/Components" : "dev-master"
+        "Mdt/Components" : "dev-master",
+        "phpdocumentor/phpdocumentor": "2.*"
 
     },
     "repositories": [
@@ -39,8 +40,8 @@
     "autoload-dev": {
         "classmap": [
             "tests/TestCase.php"
-          
         ]
+
     },
     "scripts": {
         "post-root-package-install": [

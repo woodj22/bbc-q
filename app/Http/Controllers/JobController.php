@@ -40,26 +40,13 @@ class JobController extends RestController
     }
 
 
-    public function runLdapMapper()
-    {
 
-
- //   phpinfo();
-
-
-        $LDAP_BASEDN="DC=national,DC=core,DC=bbc,DC=co,DC=uk";
-
-
-        //this method is now obsolete as search table is done below and their is no jobCollector class.
-        $LdapMapper = new LdapMapper('NATIONAL\passwordreset',"passwordreset","ldap.national.core.bbc.co.uk", $LDAP_BASEDN);
-        echo $LdapMapper->isInGroup("","woodj22");
-
-
-    }
 
     public function runJobTable()
 
     {
+
+        echo "hello world";
 
 
         /*
@@ -74,19 +61,26 @@ LDAP_BASEDN=DC=national,DC=core,DC=bbc,DC=co,DC=uk
 
         foreach ($jobList as $job) {
 
+
             if ($job->status >= 1) {
+
 
                 $myTime = Carbon\Carbon::now();
                 $runAtTime = $myTime::createFromTimestamp($job->run_at);
 
-                if ($myTime >= $runAtTime) {
+                echo $myTime;
+
+                if ($myTime <= $runAtTime) {
 
 
                     if (class_exists('App\\Jobs\\' . $job->job_type)) {
 
+
+
                         $jobName = 'App\\Jobs\\' . $job->job_type;
                         $jobClassToUse = new $jobName;
                         $jobClassToUse->setup($job->task_id, $job->payload, $job->job_type);
+                        echo "hello world";
 
 
                     } else {
@@ -96,7 +90,7 @@ LDAP_BASEDN=DC=national,DC=core,DC=bbc,DC=co,DC=uk
                     }
 
 
-                    Job::where('task_id', $job->task_id)->update(['status' => 2]);
+                    Job::where('task_id', $job->task_id)->update(['status' => 0]);
 
                     try {
                         $this->runTaskTable($job);
@@ -195,13 +189,6 @@ LDAP_BASEDN=DC=national,DC=core,DC=bbc,DC=co,DC=uk
     }
 
 
-    public function catchUnfinishedJobs()
-    {
-        $unfinishedList = Job::where('status', 2)->get();
-        $view = View::make('incompleteList')->with("unfinishedList", $unfinishedList);
-
-        return $view;
-    }
 
 
 }

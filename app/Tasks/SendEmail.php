@@ -43,9 +43,9 @@ class SendEmail extends TaskModel
     {
 
         $this->htmlPage = $job_type;
-        $this->params = parent::decodeJson($payload);
+        $this->codedPayload = parent::decodeJson($payload);
         if($this->isJson($payload)) {
-            foreach ($this->params['info'] as $i) {
+            foreach ($this->codedPayload['info'] as $i) {
 
                 $t = new Task;
                 $t->task_id = $taskId;
@@ -117,7 +117,8 @@ class SendEmail extends TaskModel
 
     {
 
-
+        $contentDirectory= base_path()."/resources/views/". $this->htmlPage . '.blade.php';
+        echo $contentDirectory;
         $html = file_get_contents('/Applications/XAMPP/htdocs/Queue/resources/views/' . $this->htmlPage . '.blade.php');
 
         if (preg_match_all('/<img[^>]*src="([^"]*)"/i', $html, $matches)) {

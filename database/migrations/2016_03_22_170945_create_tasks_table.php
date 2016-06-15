@@ -34,3 +34,5 @@ class CreateTasksTable extends Migration
         Schema::drop('tasks');
     }
 }
+
+

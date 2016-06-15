@@ -15,6 +15,9 @@ class hasKeyMiddleware  {
 
     public function handle($request, Closure $next)
     {
+
+        $sharedSecret = "password";
+
         header('Access-Control-Allow-Origin', '*');
 
         header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -23,15 +26,18 @@ class hasKeyMiddleware  {
 
             echo "hello world";
 
-          if($request->header('sharedKey')== "woodj22"){
+          if($request->header('sharedKey')== $sharedSecret){
+
 
               echo "hello world";
+
+              return $next($request);
+
           }
 
           //  return Redirect('home');
         }
-
-        return $next($request);
+        return \App::abort(403, 'Access denied');
 
     }
 
