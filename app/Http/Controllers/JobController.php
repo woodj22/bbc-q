@@ -49,13 +49,6 @@ class JobController extends RestController
         echo "hello world";
 
 
-        /*
-[2:00]
-LDAP_USERNAME=NATIONAL\passwordreset
-LDAP_PASSWORD=passwordreset
-LDAP_DC=ldap.national.core.bbc.co.uk
-LDAP_BASEDN=DC=national,DC=core,DC=bbc,DC=co,DC=uk
-*/
 
         $jobList = Job::all();
 
